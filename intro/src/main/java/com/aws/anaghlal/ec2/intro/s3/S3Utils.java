@@ -9,8 +9,7 @@ public class S3Utils {
     //static method to create an S3 client
     public static AmazonS3Client createS3Client() {
         //create the S3 client
-        AmazonS3Client s3Client = new AmazonS3Client(
-                new ProfileCredentialsProvider());
+        AmazonS3Client s3Client = new AmazonS3Client();
         return s3Client;
     }
 
