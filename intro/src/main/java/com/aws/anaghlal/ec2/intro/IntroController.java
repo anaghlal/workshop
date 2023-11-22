@@ -1,5 +1,6 @@
 package com.aws.anaghlal.ec2.intro;
 
+import com.aws.anaghlal.ec2.intro.db.DBReader;
 import com.aws.anaghlal.ec2.intro.s3.S3BucketObjectReader;
 import com.aws.anaghlal.ec2.intro.s3.S3Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,10 @@ public class IntroController {
 
     @Autowired
     private S3BucketObjectReader s3BucketObjectReader;
+
+    @Autowired
+    private DBReader dbReader;
+
     @GetMapping("/hello")
     public String hello(){
         return "Hi from "+getInstanceDetails();
@@ -28,6 +33,11 @@ public class IntroController {
     public String s3(@RequestParam(name="bucket", required = true) String bucket,
                      @RequestParam(name="key", required = true) String key) {
         return s3BucketObjectReader.read(bucket, key);
+    }
+
+    @GetMapping("/employees")
+    public String employees() {
+        return dbReader.fetchAllEmployees();
     }
 
     private String getInstanceDetails() {
