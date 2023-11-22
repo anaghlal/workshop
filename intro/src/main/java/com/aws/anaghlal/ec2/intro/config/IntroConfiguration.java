@@ -22,7 +22,7 @@ public class IntroConfiguration {
     @Value("${s3.bucket.object.key}")
     private String objectKey;
 
-    @Value("${rds.jdbc,url}")
+    @Value("${rds.jdbc.url}")
     private String jdbcUrl;
 
     @Value("${rds.secret.name}")
