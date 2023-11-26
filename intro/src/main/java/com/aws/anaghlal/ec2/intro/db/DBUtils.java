@@ -34,6 +34,7 @@ public class DBUtils {
             System.out.println(keys);
             final ObjectMapper objectMapper = new ObjectMapper();
             final HashMap<String, String> secretMap = objectMapper.readValue(secret, HashMap.class);
+            System.out.println(secretMap);
             keys.forEach(k->response.put(k,secretMap.get(k)));
         } catch (SecretsManagerException e) {
             System.err.println(e.awsErrorDetails().errorMessage());
