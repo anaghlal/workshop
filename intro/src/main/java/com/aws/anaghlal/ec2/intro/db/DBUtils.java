@@ -1,6 +1,9 @@
 package com.aws.anaghlal.ec2.intro.db;
 
 import com.aws.anaghlal.ec2.intro.model.Employee;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
 import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueRequest;
 import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueResponse;
@@ -28,12 +31,16 @@ public class DBUtils {
             GetSecretValueResponse valueResponse = secretsClient.getSecretValue(valueRequest);
             String secret = valueResponse.secretString();
             System.out.println(secret);
-
-
-            keys.forEach(k->response.put(k,valueResponse.getValueForField(k,String.class)
-                    .orElse("")));
+            System.out.println(keys);
+            final ObjectMapper objectMapper = new ObjectMapper();
+            final HashMap<String, String> secretMap = objectMapper.readValue(secret, HashMap.class);
+            keys.forEach(k->response.put(k,secretMap.get(k)));
         } catch (SecretsManagerException e) {
             System.err.println(e.awsErrorDetails().errorMessage());
+        } catch (JsonMappingException e) {
+            throw new RuntimeException(e);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
 
         return response;
