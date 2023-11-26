@@ -47,6 +47,14 @@ public class DBUtils {
     public static Optional<Connection> connect(String url, String user, String password) {
         Connection conn = null;
         try {
+            Class.forName("org.postgresql.Driver");
+            System.out.println("PostgreSQL JDBC Driver Registered!");
+        }catch (Exception e){
+            System.out.println("Error loading driver: " + e.getMessage());
+            return Optional.empty();
+        }
+        try{
+            System.out.println("Connecting to "+url);
             conn = DriverManager.getConnection(url, user, password);
             System.out.println("Connected to the PostgreSQL server successfully.");
         } catch (SQLException e) {
